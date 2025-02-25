@@ -1,4 +1,6 @@
+{% load register_tags %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,8 +89,11 @@
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
-                        </div>
+                        {% if product.discount %}
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                Sale
+                            </div>
+                        {% endif %}
                         <!-- Product image-->
                         <img class="card-img-top" src="{{ product.get_absolute_url }}" alt="..."/>
                         <!-- Product details-->
@@ -98,21 +103,30 @@
                                 <h5 class="fw-bolder">{{ product.name }}</h5>
                                 <!-- Product reviews-->
                                 <div class="d-flex justify-content-center small text-warning mb-2">
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
+                                    {#                                    {% with ''|center:product.rating as range %}#}
+                                    {#                                        {% for f in range %}#}
+                                    {#                                            <div class="bi-star-fill"></div>#}
+                                    {#                                        {% endfor %}#}
+                                    {#                                    {% endwith %}#}
+                                    {% for _ in product.rating|get_range %}
+                                        <div class="bi-star-fill"></div>
+                                    {% endfor %}
                                 </div>
                                 <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">${{ product.price }}</span>
-                                ${{ product.discounted_price }}
+                                {% if product.discount %}
+                                    <span class="text-muted text-decoration-line-through">
+                                    ${{ product.price }}
+                                    </span>
+                                    ${{ product.discounted_price }}
+                                {% else %}
+                                    ${{ product.price }}
+                                {% endif %}
                             </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                        href="{% url 'product_detail' %}">View
+                                                        href="{% url 'product_detail' product.id %}">View
                                 product</a></div>
 
 
