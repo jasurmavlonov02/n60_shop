@@ -82,6 +82,15 @@
         <div class="col-1">
             <a class="btn btn-outline-dark mt-auto" href="#"> Likes </a>
         </div>
+        {% if user.is_superuser %}
+            <div class="col-1">
+                <a href="{% url 'product_create' %}">
+                    <button type="submit" class="btn btn-outline-success">
+                        Add Product
+                    </button>
+                </a>
+            </div>
+        {% endif %}
 
     </div>
 </div>
