@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -9,11 +10,15 @@ from shop.forms import ProductForm, ProductModelForm
 
 
 def index(request, category_id: int | None = None):
+    search_query = request.GET.get('q', '')
     categories = Category.objects.all()
+
     if category_id:
         products = Product.objects.filter(category_id=category_id)
     else:
         products = Product.objects.all().order_by('-updated_at')  # select * from products order by updated_at DESC
+    if search_query:
+        products = Product.objects.filter(Q(name__icontains=search_query) | Q(description__icontains=search_query))
     context = {
         'products': products,
         'categories': categories
@@ -22,12 +27,14 @@ def index(request, category_id: int | None = None):
 
 
 def product_detail(request, product_id):
+    categories = Category.objects.all()
     # product = Product.objects.get(id=product_id)
     # product = Product.objects.filter(id=product_id).first()
 
     product = get_object_or_404(Product, id=product_id)
     context = {
-        'product': product
+        'product': product,
+        'categories': categories
     }
     return render(request, 'shop/detail.html', context)
 
