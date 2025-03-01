@@ -62,6 +62,7 @@ def product_create(request):
     return render(request, 'shop/product-create.html', context)
 
 
+@login_required(login_url='/admin/')
 def product_update(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     form = ProductModelForm(instance=product)
@@ -77,6 +78,7 @@ def product_update(request, product_id):
     return render(request, 'shop/product-update.html', context)
 
 
+@login_required(login_url='/admin/')
 def product_delete(request, product_id):
     product = Product.objects.get(id=product_id)
     if product:
