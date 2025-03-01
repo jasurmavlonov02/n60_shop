@@ -57,7 +57,8 @@ def product_create(request):
             return redirect('index')
 
     context = {
-        'form': form
+        'form': form,
+        'action': 'Create'
     }
     return render(request, 'shop/product-create.html', context)
 
@@ -73,7 +74,8 @@ def product_update(request, product_id):
             return redirect('product_detail', product_id)
     context = {
         'product': product,
-        'form': form
+        'form': form,
+        'action': 'Update'
     }
     return render(request, 'shop/product-update.html', context)
 
