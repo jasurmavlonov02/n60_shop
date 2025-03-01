@@ -57,6 +57,41 @@
             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ product.get_absolute_url }}"
                                        alt="..."/></div>
             <div class="col-md-6">
+                <div>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                        Delete
+                    </button>
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Confirm Deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <form method="post" action="{% url 'product_delete' product.id %}">
+
+                                    <div class="modal-body">
+                                        Are you sure you want to delete <strong>{{ product.name }}</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel
+                                        </button>
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'product_update' product.id %}">
+                        <button type="button" class="btn btn-outline-warning">Update</button>
+                    </a>
+                </div>
                 <div class="small mb-1"><h3>Quantity : {{ product.quantity }}</h3></div>
                 <h1 class="display-5 fw-bolder">{{ product.name }}</h1>
                 <div class="fs-5 mb-5">

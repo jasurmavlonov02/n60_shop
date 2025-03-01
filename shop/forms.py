@@ -34,9 +34,6 @@ class ProductForm(forms.Form):
 
 
 class ProductModelForm(forms.ModelForm):
-    # name = forms.CharField(max_length=100, null=True)
-
     class Meta:
         model = Product
-        # fields = '__all__'
         exclude = ()

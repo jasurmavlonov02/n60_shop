@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from shop.models import Product, Category
-from shop.forms import ProductForm
+from shop.forms import ProductForm, ProductModelForm
 
 
 # Create your views here.
@@ -44,19 +44,42 @@ def product_detail(request, product_id):
 #     context = {
 #         'form': form
 #     }
-#     return render(request, 'shop/add-product.html', context)
+#     return render(request, 'shop/product-create.html', context)
 
 @login_required(login_url='/admin/')
 def product_create(request):
     form = ProductForm()
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
+        form = ProductModelForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save(commit=False)
+            form.save()
 
             return redirect('index')
 
     context = {
         'form': form
     }
-    return render(request, 'shop/add-product.html', context)
+    return render(request, 'shop/product-create.html', context)
+
+
+def product_update(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    form = ProductModelForm(instance=product)
+    if request.method == 'POST':
+        form = ProductModelForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('product_detail', product_id)
+    context = {
+        'product': product,
+        'form': form
+    }
+    return render(request, 'shop/product-update.html', context)
+
+
+def product_delete(request, product_id):
+    product = Product.objects.get(id=product_id)
+    if product:
+        product.delete()
+        return redirect('index')
+    return render(request, 'shop/detail.html', {'product': product})
