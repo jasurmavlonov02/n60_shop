@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
 from shop.models import Product, Category
-from shop.forms import ProductForm, ProductModelForm
+from shop.forms import ProductModelForm, CommentModelForm
 
 
 # Create your views here.
@@ -28,13 +28,12 @@ def index(request, category_id: int | None = None):
 
 def product_detail(request, product_id):
     categories = Category.objects.all()
-    # product = Product.objects.get(id=product_id)
-    # product = Product.objects.filter(id=product_id).first()
-
     product = get_object_or_404(Product, id=product_id)
+    comments = product.comments.all()
     context = {
         'product': product,
-        'categories': categories
+        'categories': categories,
+        'comments': comments
     }
     return render(request, 'shop/detail.html', context)
 
@@ -94,3 +93,25 @@ def product_delete(request, product_id):
         product.delete()
         return redirect('index')
     return render(request, 'shop/detail.html', {'product': product})
+
+
+def comment_view(request, pk):
+    product = Product.objects.get(id=pk)
+    form = CommentModelForm()
+    if request.method == 'POST':
+        form = CommentModelForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            rating = request.POST.get('rating')
+            print(type(rating))
+            comment.rating = rating
+            comment.product = product
+            comment.save()
+            return redirect('product_detail', product.id)
+
+    context = {
+        'form': form,
+        'product': product
+    }
+
+    return render(request, 'shop/detail.html', context)

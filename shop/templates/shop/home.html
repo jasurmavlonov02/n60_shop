@@ -1,5 +1,5 @@
 {% extends 'shop/base/base.html' %}
-{% load register_tags %}
+
 {% load static %}
 
 
@@ -72,9 +72,10 @@
                                         {#                                            <div class="bi-star-fill"></div>#}
                                         {#                                        {% endfor %}#}
                                         {#                                    {% endwith %}#}
-                                        {% for _ in product.rating|get_range %}
-                                            <div class="bi-star-fill"></div>
-                                        {% endfor %}
+{#                                        {% for _ in product.rating|get_range %}#}
+{#                                            <div class="bi-star-fill"></div>#}
+{#                                        {% endfor %}#}
+                                        <h3>rating</h3>
                                     </div>
                                     <!-- Product price-->
                                     {% if product.discount %}
