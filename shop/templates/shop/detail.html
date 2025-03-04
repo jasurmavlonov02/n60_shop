@@ -96,7 +96,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="text-center">
-                    <h2>Latest comments</h2>
+                    <h2>Latest comments ({{ product.comments.count }})</h2>
                 </div>
                 {% for comment in comments %}
                     <div class="media card p-4 mt-2">
@@ -111,7 +111,7 @@
                                 {% for _ in comment.rating|get_range %}
                                     <div class="bi-star-fill"></div>
                                 {% endfor %}
-                                
+
                             </div>
 
                             <h3 class="mt-0">{{ comment.full_name }}</h3>

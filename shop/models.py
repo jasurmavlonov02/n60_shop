@@ -1,6 +1,8 @@
 from django.db import models
 from decimal import Decimal
 
+from django.db.models import Avg
+
 
 # Create your models here.
 
@@ -39,6 +41,11 @@ class Product(BaseModel):
         if self.discount > 0:
             self.price = self.price * Decimal(1 - self.discount / 100)
         return Decimal(f'{self.price}').quantize(Decimal('0.00'))
+
+    @property
+    def comment_rating(self):
+        products = self.comments.aggregate(product_avg_rating=Avg('rating'))
+        return Decimal(f'{products['product_avg_rating']}').quantize(Decimal('0.000'))
 
     @property
     def get_absolute_url(self):

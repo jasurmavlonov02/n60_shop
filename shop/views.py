@@ -54,7 +54,7 @@ def product_detail(request, product_id):
 
 @login_required(login_url='/admin/')
 def product_create(request):
-    form = ProductForm()
+    form = ProductModelForm()
     if request.method == 'POST':
         form = ProductModelForm(request.POST, request.FILES)
         if form.is_valid():
