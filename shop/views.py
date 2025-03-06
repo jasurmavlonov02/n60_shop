@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from shop.models import Product, Category
 from shop.forms import ProductModelForm, CommentModelForm, OrderModelForm
+from django.db.models import Avg
 
 
 # Create your views here.
@@ -29,11 +30,14 @@ def index(request, category_id: int | None = None):
 def product_detail(request, product_id):
     categories = Category.objects.all()
     product = get_object_or_404(Product, id=product_id)
+    related_products = Product.objects.all().annotate(rating_avg=Avg('comments__rating')).filter(
+        category=product.category).exclude(id=product.id).order_by('-rating_avg')
     comments = product.comments.all()
     context = {
         'product': product,
         'categories': categories,
-        'comments': comments
+        'comments': comments,
+        'related_products': related_products
     }
     return render(request, 'shop/detail.html', context)
 
