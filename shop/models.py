@@ -9,6 +9,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    my_order = models.PositiveIntegerField(default=0, null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -58,6 +59,7 @@ class Product(BaseModel):
 
     class Meta:
         db_table = 'product'
+        ordering = ['my_order']
 
 
 class Comment(BaseModel):
