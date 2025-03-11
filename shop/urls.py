@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path
 from shop import views
 
+app_name = 'shop'
+
 urlpatterns = [
     path('product/', views.index, name='index'),
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),

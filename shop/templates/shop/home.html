@@ -35,7 +35,7 @@
             </div>
             {% if user.is_superuser %}
                 <div class="col-1">
-                    <a href="{% url 'product_create' %}">
+                    <a href="{% url 'shop:product_create' %}">
                         <button type="submit" class="btn btn-outline-success">
                             Add Product
                         </button>
@@ -83,7 +83,7 @@
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto"
-                                                            href="{% url 'product_detail' product.id %}">View
+                                                            href="{% url 'shop:product_detail' product.id %}">View
                                     product</a></div>
 
 

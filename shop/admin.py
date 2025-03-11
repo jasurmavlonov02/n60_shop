@@ -16,8 +16,15 @@ from shop.models import Product, Category, Comment
 admin.site.unregister(Group)
 
 
+class ProductInline(admin.StackedInline):
+    model = Product
+
+
 @admin.register(Category)
 class CategoryModelAdmin(admin.ModelAdmin):
+    inlines = [
+        ProductInline,
+    ]
     list_display = ('id', 'title')
 
 
