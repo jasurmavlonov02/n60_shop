@@ -48,21 +48,45 @@
                                 </div>
                                 <div class="col-md-7 d-flex flex-center">
                                     <div class="p-4 p-md-5 flex-grow-1">
+                                        <div>
+                                            {% if messages %}
+                                                <ul class="messages">
+                                                    {% for message in messages %}
+                                                        <li style="color:red;" {% if message.tags %}
+                                                            class="{{ message.tags }}"{% endif %}>{{ message }}
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            {% endif %}
+                                            {% if form.errors %}
+                                                <div class="alert alert-warning alert-dismissible fade show"
+                                                     role="alert">
+                                                    <p class="m-0">{{ form.errors }}</p>
+                                                    <button type="button"
+                                                            class="btn-close"
+                                                            data-bs-dismiss="alert"
+                                                            aria-label="Close">
+                                                    </button>
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                         <div class="row flex-between-center">
                                             <div class="col-auto">
                                                 <h3>Account Login</h3>
                                             </div>
                                         </div>
-                                        <form>
+                                        <form method="post" action="{% url 'users:login_page' %}">
+                                            {% csrf_token %}
                                             <div class="mb-3">
                                                 <label class="form-label" for="card-email">Email address</label>
-                                                <input class="form-control" id="card-email" type="email"/>
+                                                <input class="form-control" name="email" id="card-email" type="email"/>
                                             </div>
                                             <div class="mb-3">
                                                 <div class="d-flex justify-content-between">
                                                     <label class="form-label" for="card-password">Password</label>
                                                 </div>
-                                                <input class="form-control" id="card-password" type="password"/>
+                                                <input class="form-control" name="password" id="card-password"
+                                                       type="password"/>
                                             </div>
                                             <div class="row flex-between-center">
                                                 <div class="col-auto">

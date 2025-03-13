@@ -55,9 +55,16 @@
             </form>
 
             {% if user.is_authenticated %}
-                <div class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <button type="button" class="btn btn-danger">Logout</button>
-                </div>
+                <form method="post" action="{% url 'users:logout_page' %}">
+                    {% csrf_token %}
+                    <div class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+
+                        <button type="submit" class="btn btn-danger">Logout</button>
+
+                    </div>
+                    {{ user.email }}
+                </form>
+
             {% else %}
 
                 <div class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
