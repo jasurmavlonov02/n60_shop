@@ -6,6 +6,8 @@ from shop.models import Product, Category
 from shop.forms import ProductModelForm, CommentModelForm, OrderModelForm
 from django.db.models import Avg
 
+from django.core.paginator import Paginator
+
 
 # Create your views here.
 
@@ -32,8 +34,12 @@ def index(request, category_id: int | None = None):
     elif filter_query == 'rating':
         products = products.annotate(rating_avg=Avg('comments__rating')).order_by('-rating_avg')
 
+    paginator = Paginator(products, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'products': products,
+        'page_obj': page_obj,
         'categories': categories
     }
     return render(request, 'shop/home.html', context)
