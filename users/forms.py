@@ -59,3 +59,5 @@ class RegisterModelForm(forms.ModelForm):
         if password != confirm_password:
             raise forms.ValidationError(f'Password don\'t match')
         return confirm_password
+
+

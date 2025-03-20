@@ -1,6 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
+from django.views.generic import FormView
+
 from users.forms import LoginForm, RegisterModelForm
 
 
@@ -46,6 +49,13 @@ def register_page(request):
             user.is_superuser = True
             user.set_password(user.password)
             user.save()
+            send_mail(
+                'Hello Dear!',
+                'You Successfully registered',
+                'jasurmavlonov24@gmail.com',
+                [user.email],
+                fail_silently=False
+            )
             login(request, user)
             return redirect('shop:index')
     context = {
@@ -58,3 +68,27 @@ def logout_page(request):
     if request.method == 'POST':
         logout(request)
         return redirect('shop:index')
+
+
+class RegisterPage(FormView):
+    template_name = 'users/register.html'
+    form_class = RegisterModelForm
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.is_staff = True
+        user.is_superuser = True
+        user.set_password(user.password)
+        user.save()
+        send_mail(
+            'Hello Dear!',
+            'You Successfully registered',
+            'jasurmavlonov24@gmail.com',
+            [user.email],
+            fail_silently=False
+        )
+        login(request, user)
+        return redirect('shop:index')
+
+    def form_invalid(self, form):
+        pass
