@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from users.forms import LoginForm
+from users.forms import LoginForm, RegisterModelForm
 
 
 # Create your views here.
@@ -37,7 +37,21 @@ def login_page(request):
 
 
 def register_page(request):
-    return render(request, 'users/register.html')
+    form = RegisterModelForm()
+    if request.method == 'POST':
+        form = RegisterModelForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_staff = True
+            user.is_superuser = True
+            user.set_password(user.password)
+            user.save()
+            login(request, user)
+            return redirect('shop:index')
+    context = {
+        'form': form,
+    }
+    return render(request, 'users/register.html', context)
 
 
 def logout_page(request):
