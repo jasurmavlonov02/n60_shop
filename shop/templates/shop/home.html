@@ -1,0 +1,117 @@
+{% extends 'shop/base/base.html' %}
+
+{% load static %}
+
+
+{% block title %}Home Page{% endblock %}
+
+
+{% block home_content %}
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Shop in style</h1>
+                <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+            </div>
+        </div>
+    </header>
+    <!-- Section-->
+
+    <div class="container mt-5">
+        <div class="text-left">
+            <h3>Filter by</h3>
+        </div>
+        <div class="row">
+            <div class="col-1">
+                <a class="btn btn-outline-dark mt-auto" href="?filter=expensive"> Expensive </a>
+            </div>
+
+            <div class="col-1">
+                <a class="btn btn-outline-dark mt-auto" href="?filter=cheap"> Cheap </a>
+            </div>
+
+            <div class="col-1">
+                <a class="btn btn-outline-dark mt-auto" href="?filter=rating"> Rating </a>
+            </div>
+            {% if user.is_superuser %}
+                <div class="col-1">
+                    <a href="{% url 'shop:product_create' %}">
+                        <button type="submit" class="btn btn-outline-success">
+                            Add Product
+                        </button>
+                    </a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for product in page_obj %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Sale badge-->
+                            {% if product.discount %}
+                                <div class="badge bg-dark text-white position-absolute"
+                                     style="top: 0.5rem; right: 0.5rem">
+                                    Sale
+                                </div>
+                            {% endif %}
+                            <!-- Product image-->
+                            <img class="card-img-top" src="{{ product.get_absolute_url }}" alt="..."/>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{ product.name }}</h5>
+                                    <!-- Product reviews-->
+                                    <div>
+                                        <h5>rating : {{ product.comment_rating }}</h5>
+                                    </div>
+                                    <!-- Product price-->
+                                    {% if product.discount %}
+                                        <span class="text-muted text-decoration-line-through">
+                                    ${{ product.price }}
+                                    </span>
+                                        ${{ product.discounted_price }}
+                                    {% else %}
+                                        ${{ product.price }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                                            href="{% url 'shop:product_detail' product.id %}">View
+                                    product</a></div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+        <div>
+            <div class="pagination h-100 d-flex align-items-center justify-content-center">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </section>
+{% endblock %}

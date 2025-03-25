@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email talab qilinadi</title>
+</head>
+<body>
+    <h2>GitHub orqali kirish uchun email talab qilinadi</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="email">Email manzilingizni kiriting:</label>
+        <input type="email" name="email" required>
+        <button type="submit">Saqlash</button>
+    </form>
+</body>
+</html>
