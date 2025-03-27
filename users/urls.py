@@ -8,8 +8,10 @@ app_name = 'users'
 
 urlpatterns = [
     path('login/', views.login_page, name='login_page'),
-    path('register/', views.register_page, name='register_page'),
+    # path('register/', views.register_page, name='register_page'),
     path('logout/', views.logout_page, name='logout_page'),
     path('register/', views.RegisterPage.as_view(), name='register_page'),
-    path('email-required/', views.email_required, name='email_required')
+    path('email-required/', views.email_required, name='email_required'),
+    path('verifiy-email-done/', views.verify_email_done, name='verify_email_done'),
+    path('verify-email-confirm/<uidb64>/<token>/', views.verify_email_confirm, name='verify_email_confirm')
 ]
