@@ -1,0 +1,11 @@
+[
+    {
+        "name": "test12345",
+        "description": "test",
+        "price": 224.0,
+        "image": "/media/images/iphone_15_I9orXWg.webp",
+        "discount": 23,
+        "quantity": 1,
+        "category": 1
+    }
+]
