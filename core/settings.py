@@ -56,6 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.RequestLoggingMiddleware',
+    'core.middleware.AutoLogoutMiddleWare',
 
     # 'shop.middleware.CustomMiddleware'
 ]
@@ -174,3 +176,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
+
+SESSION_COOKIE_AGE = 60 # seconds
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

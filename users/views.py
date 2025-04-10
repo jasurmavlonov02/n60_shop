@@ -88,7 +88,7 @@ class RegisterPage(FormView):
         user.is_superuser = True
         user.is_active = False
         user.set_password(user.password)
-        # user.save()
+        user.save()
         current_site = get_current_site(self.request)
         subject = "Verify Email"
         message = render_to_string('users/email/verify_email_message.html', {
@@ -106,8 +106,7 @@ class RegisterPage(FormView):
         email.send()
         return redirect('users:verify_email_done')
 
-    def form_invalid(self, form):
-        pass
+
 
 
 def email_required(request):
@@ -131,6 +130,7 @@ def verify_email_confirm(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = CustomUser.objects.get(pk=uid)
+    
     except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
         user = None
     if user and account_activation_token.check_token(user, token):
